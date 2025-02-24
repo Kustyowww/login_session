@@ -13,10 +13,29 @@
    <h2 style="margin-left:10rem; margin-top:5rem;">Enter Username and Password</h2> 
    <?php
       $msg = '';
-      
+      $users = ['user'=>"test", "manager"=>"secret", "guest"=>"abc123"];
+
+      if (isset($_POST['login']) && !empty($_POST['username']) 
+      && !empty($_POST['password'])) {
+         $user=$_POST['username'];                  
+         if (array_key_exists($user, $users)){
+            if ($users[$_POST['username']]==$_POST['password']){
+               $_SESSION['valid'] = true;
+               $_SESSION['timeout'] = time();
+               $_SESSION['username'] = $_POST['username'];
+               $msg = "You have entered correct username and password";
+            }
+            else {
+               $msg = "You have entered wrong Password";
+            }
+         }
+         else {
+            $msg = "You have entered wrong user name";
+         }
+      }
    ?>
 
-   <h4 style="margin-left:10rem; color:red;"><?php echo $msg; ?></h4>
+   <h4 style="margin-left:10rem; color:green;"><?php echo $msg; ?></h4>
    <br/><br/>
    <form action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
       <div>
